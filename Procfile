@@ -1,1 +1,1 @@
-web: gunicorn heroku_django_boilerplate.wsgi
+web: gunicorn exun_prelims.wsgi
