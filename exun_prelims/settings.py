@@ -37,7 +37,7 @@ if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
     ALLOWED_HOSTS = [
-        'exun-prelims.herokuapp.com',
+        'tsrsm-exun-prelims.herokuapp.com',
     ]
     
 INTERNAL_IPS = [
