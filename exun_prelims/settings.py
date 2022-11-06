@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
 
     'tailwind',
-    'django_browser_reload'
+    'django_browser_reload',
 
     'theme',
 ]
