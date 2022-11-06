@@ -21,6 +21,8 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("__reload__/", include("django_browser_reload.urls")),
     path("", TemplateView.as_view(template_name="index.html")),
+    path("", include("core.urls")),
+
+    path("__reload__/", include("django_browser_reload.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

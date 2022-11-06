@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'django_browser_reload',
 
     'theme',
+    'core'
 ]
 
 # Tailwind app config
