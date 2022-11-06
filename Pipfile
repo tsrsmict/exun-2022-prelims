@@ -12,6 +12,7 @@ whitenoise = "*"
 django-environ = "*"
 python-dotenv = '*'
 sentry-sdk = "*"
+django-tailwind = "*"
 
 [dev-packages]
 
