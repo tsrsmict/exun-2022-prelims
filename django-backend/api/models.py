@@ -25,7 +25,7 @@ class NFTCollectible(models.Model):
     owner = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL)
     @property
     def is_bought(self):
-        return self.user is not None
+        return self.owner is not None
 
     def __str__(self):
         return self.name
@@ -77,7 +77,7 @@ class PurchaseRequest(models.Model):
 
     @property
     def receiver(self):
-        return self.nft.user
+        return self.nft.owner
     
     @property
     def has_been_accepted(self) -> bool:

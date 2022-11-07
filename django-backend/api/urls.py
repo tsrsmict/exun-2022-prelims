@@ -22,6 +22,8 @@ urlpatterns = [
     path('', include(user_router.urls)),
     path('', include(nft_router.urls)),
     path('', include(purchase_router.urls)),
+
+    path('open-lootbox/', views.OpenLootboxView.as_view(), name='open-lootbox'),
     path('token-auth/', authtoken_views.obtain_auth_token, name='token-auth'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
