@@ -81,16 +81,23 @@ class OpenLootboxView(APIView):
         
         # Subtract the value of the lootbox from the player's account
         player.coins -= collectible_tier.coins_price
+        player.save()
 
         # Get the lootbox tier's NFTs
         nfts = collectible_tier.random_collectibles()
         for nft in nfts:
             nft.owner = player
-            nft.save()        
-        res_data = {"collectibles": [nft.token for nft in nfts]}
-        res = JSONRenderer().render(res_data)
+            nft.save()
 
-        return HttpResponse(res, content_type='application/json', status=200)
+        renderer = JSONRenderer()
+        account_data = (custom_serializers.PlayerSerializer(player).data)
+
+        res = {
+            "success": len(nfts) > 0,
+            "account": account_data,
+        }
+
+        return HttpResponse(renderer.render(res), content_type='application/json', status=200)
 
 class PlayerViewSet(viewsets.ModelViewSet):
     authentication_classes = [BasicAuthentication, TokenAuthentication]
