@@ -9,9 +9,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['url', 'username', 'password']
-    
-
-
 
 class PurchaseRequestSerializer(serializers.ModelSerializer):
     nft_token = serializers.CharField(source='nft.token', read_only=True)
@@ -29,7 +26,7 @@ class NFTCollectibleSerializer(serializers.ModelSerializer):
     bids = serializers.ListField(child=PurchaseRequestSerializer(), read_only=True)
     class Meta:
         model = models.NFTCollectible
-        fields = ['token', 'name', 'description', 'image', 'tier', 'owner_id', 'bids']
+        fields = ['token', 'name', 'description', 'image', 'tier', 'owner_id', 'is_available', 'bids']
 
 class LootboxTierSerializer(serializers.ModelSerializer):
     class Meta:
