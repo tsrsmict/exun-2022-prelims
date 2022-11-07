@@ -10,11 +10,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ['url', 'username', 'password']
     
-    def create(self, validated_data):
-        user = super(UserSerializer, self).create(validated_data)
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
+
 
 
 class PurchaseRequestSerializer(serializers.ModelSerializer):
@@ -35,17 +31,23 @@ class NFTCollectibleSerializer(serializers.ModelSerializer):
         model = models.NFTCollectible
         fields = ['token', 'name', 'description', 'image', 'tier', 'owner_id', 'bids']
 
-class LootboxSerializer(serializers.ModelSerializer):
+class LootboxTierSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.LootboxTier
-        fields = ['included_tiers', 'price']
+        fields = ['id', 'title', 'included_tiers', 'coins_price']
 
 class PlayerSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField(source='user.id')
-    # account_id = serializers.ReadOnlyField(source='account.id')
+    account_id = serializers.IntegerField(source='account.id', read_only=True)
     spacebucks = serializers.FloatField(read_only=True)
     coins = serializers.IntegerField(read_only=True)
     collectibles = NFTCollectibleSerializer(many=True, read_only=True)
     class Meta:
         model = models.Player
-        fields = ['id', 'username', 'profile_image', 'spacebucks', 'coins', 'collectibles']
+        fields = ['id', 'account_id', 'username', 'profile_image', 'spacebucks', 'coins', 'collectibles']
+    
+    def create(self, validated_data):
+        print(validated_data)
+        user = User.objects.get(id=validated_data['account']['id'])
+        player = models.Player.objects.create(account=user, profile_image=validated_data['profile_image'])
+        return player

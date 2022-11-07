@@ -36,7 +36,7 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.pk,
         })
 
-class NFTCollectibleViewSet(viewsets.ModelViewSet):
+class NFTCollectibleViewSet(viewsets.ReadOnlyModelViewSet):
     authentication_classes = [BasicAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = models.NFTCollectible.objects.all()
@@ -47,6 +47,12 @@ class PurchaseRequestViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = models.PurchaseRequest.objects.all()
     serializer_class = custom_serializers.PurchaseRequestSerializer
+
+class LootboxTierViewSet(viewsets.ReadOnlyModelViewSet):
+    authentication_classes = [BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = models.LootboxTier.objects.all()
+    serializer_class = custom_serializers.LootboxTierSerializer  
 
 class OpenLootboxView(APIView):
     authentication_classes = [BasicAuthentication, TokenAuthentication]

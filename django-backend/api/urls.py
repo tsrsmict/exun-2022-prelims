@@ -19,11 +19,15 @@ purchase_router.register(r'purchase-requests', views.PurchaseRequestViewSet)
 player_router = routers.DefaultRouter()
 player_router.register(r'players', views.PlayerViewSet)
 
+lootbox_router = routers.DefaultRouter()
+lootbox_router.register(r'lootbox-tiers', views.LootboxTierViewSet)
+
 urlpatterns = [
     path('', include(user_router.urls)),
     path('', include(nft_router.urls)),
     path('', include(purchase_router.urls)),
     path('', include(player_router.urls)),
+    path('', include(lootbox_router.urls)),
 
     path('open-lootbox/', views.OpenLootboxView.as_view(), name='open-lootbox'),
     path('token-auth/', views.CustomAuthToken.as_view(), name='auth_token'),
