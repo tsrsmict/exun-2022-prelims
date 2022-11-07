@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 import uuid
 
-# Create your models here.
+
 class NFTCollectible(models.Model):
     token = models.CharField(max_length=100, editable=False, unique=True)
 
@@ -25,15 +25,22 @@ class NFTCollectible(models.Model):
         if not self.token or self.token == "": self.token = str(uuid.uuid4()).replace('-', '')[:12]
         super(NFTCollectible, self).save(*args, **kwargs)
 
+
+
 class PurchaseRequest(models.Model):
     nft = models.ForeignKey(NFTCollectible, on_delete=models.CASCADE)
     sender = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL)
 
-    datetime = models.DateTimeField(auto_now_add=True)
+    datetime_sent = models.DateTimeField(auto_now_add=True)
+    datetime_accepted = models.DateTimeField(null=True, blank=True)
 
     @property
     def receiver(self):
         return self.nft.user
+    
+    @property
+    def has_been_accepted(self) -> bool:
+        return self.datetime_accepted is not None        
     
     def __str__(self):
         return f"{self.sender} wants to buy {self.nft} from {self.receiver}"
