@@ -16,8 +16,6 @@ nft_router.register(r'nft-collectibles', views.NFTCollectibleViewSet)
 purchase_router = routers.DefaultRouter()
 purchase_router.register(r'purchase-requests', views.PurchaseRequestViewSet)
 
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(user_router.urls)),
     path('', include(nft_router.urls)),

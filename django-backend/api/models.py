@@ -1,10 +1,14 @@
 import uuid
 import random
+import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 from multiselectfield import MultiSelectField
+from model_utils import FieldTracker
 
 COLLECTIBLE_TIERS = (
     ('TIER_1', 'Legendary'),
@@ -70,18 +74,22 @@ class LootboxTier(models.Model):
 
 class PurchaseRequest(models.Model):
     nft = models.ForeignKey(NFTCollectible, on_delete=models.CASCADE)
-    sender = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL)
-
+    sender = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='sender')
+    receiver = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='receiver')
     datetime_sent = models.DateTimeField(auto_now_add=True)
+    
+    is_accepted = models.BooleanField(default=False)
     datetime_accepted = models.DateTimeField(null=True, blank=True)
 
-    @property
-    def receiver(self):
-        return self.nft.owner
-    
-    @property
-    def has_been_accepted(self) -> bool:
-        return self.datetime_accepted is not None        
+    tracker = FieldTracker()
     
     def __str__(self):
         return f"{self.sender} wants to buy {self.nft} from {self.receiver}"
+
+@receiver(pre_save, sender=PurchaseRequest)
+def pre_save_callback(sender, instance, *args, **kwargs):
+    print('Pre save function...')
+    if instance.tracker.has_changed('is_accepted') and instance.is_accepted:
+        instance.datetime_accepted = datetime.datetime.now()
+        instance.nft.owner = instance.sender
+        instance.nft.save()

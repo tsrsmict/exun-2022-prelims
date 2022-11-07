@@ -19,7 +19,9 @@ class PurchaseRequest(serializers.ModelSerializer):
     nft_token = serializers.CharField(source='nft.token', read_only=True)
     sender_id = serializers.ReadOnlyField(source='sender.id')
     receiver_id = serializers.ReadOnlyField(source='receiver.id')
+    datetime_accepted = serializers.DateTimeField(read_only=True)
+    is_accepted = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = models.PurchaseRequest
-        fields = ['nft_token', 'sender_id', 'receiver_id', 'datetime_sent', 'datetime_accepted', 'has_been_accepted']
+        fields = ['nft_token', 'sender_id', 'receiver_id', 'datetime_sent', 'is_accepted', 'datetime_accepted']
