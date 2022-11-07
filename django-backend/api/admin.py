@@ -8,3 +8,7 @@ class NFTCollectibleAdmin(admin.ModelAdmin):
 @admin.register(models.PurchaseRequest)
 class PurchaseRequestAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(models.LootboxTier)
+class LootboxTierAdmin(admin.ModelAdmin):
+    pass

@@ -22,4 +22,4 @@ class PurchaseRequest(serializers.ModelSerializer):
 
     class Meta:
         model = models.PurchaseRequest
-        fields = ['nft_token', 'sender_id', 'datetime', 'receiver_id']
+        fields = ['nft_token', 'sender_id', 'receiver_id', 'datetime_sent', 'datetime_accepted', 'has_been_accepted']
