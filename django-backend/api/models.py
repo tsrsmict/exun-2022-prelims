@@ -22,7 +22,7 @@ class NFTCollectible(models.Model):
     image = models.ImageField(upload_to='images/', default=None, null=True, blank=True)
     tier = models.CharField(max_length=10, choices=COLLECTIBLE_TIERS, default='TIER_5')
     
-    user = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL)
     @property
     def is_bought(self):
         return self.user is not None
