@@ -2,6 +2,7 @@
 from django.urls import path, include
 
 from rest_framework import routers
+from rest_framework.authtoken import views as authtoken_views
 
 from . import views as views
 
@@ -15,11 +16,12 @@ nft_router.register(r'nft-collectibles', views.NFTCollectibleViewSet)
 purchase_router = routers.DefaultRouter()
 purchase_router.register(r'purchase-requests', views.PurchaseRequestViewSet)
 
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(user_router.urls)),
     path('', include(nft_router.urls)),
     path('', include(purchase_router.urls)),
+
+    path('open-lootbox/', views.OpenLootboxView.as_view(), name='open-lootbox'),
+    path('token-auth/', authtoken_views.obtain_auth_token, name='token-auth'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
