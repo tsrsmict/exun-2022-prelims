@@ -2,6 +2,7 @@
 from django.urls import path, include
 
 from rest_framework import routers
+from rest_framework.authtoken import views as authtoken_views
 
 from . import views as views
 
@@ -21,5 +22,6 @@ urlpatterns = [
     path('', include(user_router.urls)),
     path('', include(nft_router.urls)),
     path('', include(purchase_router.urls)),
+    path('token-auth/', authtoken_views.obtain_auth_token, name='token-auth'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
