@@ -13,6 +13,8 @@ django-environ = "*"
 python-dotenv = '*'
 sentry-sdk = "*"
 django-tailwind = "*"
+markdown = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
