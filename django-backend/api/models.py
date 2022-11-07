@@ -49,7 +49,7 @@ class NFTCollectible(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images/', default=None, null=True, blank=True)
+    image = models.ImageField(upload_to='media/images/', default=None, null=True, blank=True)
     tier = models.CharField(max_length=10, choices=COLLECTIBLE_TIERS, default='TIER_5')
     
     owner = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL)
@@ -87,7 +87,7 @@ class LootboxTier(models.Model):
     coins_price = models.IntegerField(default=0.0)
 
     def __str__(self) -> str:
-        return f'{self.included_tiers} - {self.price}'
+        return f'{self.included_tiers} - {self.coins_price}'
 
     def random_collectibles(self):
         collectible_sets = []
@@ -120,7 +120,7 @@ class Player(models.Model):
     @property
     def username(self):
         return self.account.username
-    profile_image = models.ImageField(upload_to='images/', default=None, null=True, blank=True)
+    profile_image = models.ImageField(upload_to='media/images/', default=None, null=True, blank=True)
 
     spacebucks = models.FloatField(default=0.0)
     game_coins = models.BigIntegerField(default=0)

@@ -23,7 +23,7 @@ class PurchaseRequestSerializer(serializers.ModelSerializer):
 
 class NFTCollectibleSerializer(serializers.ModelSerializer):
     owner_id = serializers.ReadOnlyField(source='owner.id')
-    bids = serializers.ListField(source='bids', child=PurchaseRequestSerializer(), read_only=True)
+    bids = serializers.ListField(child=PurchaseRequestSerializer(), read_only=True)
     class Meta:
         model = models.NFTCollectible
         fields = ['token', 'name', 'description', 'image', 'tier', 'owner_id', 'bids']
