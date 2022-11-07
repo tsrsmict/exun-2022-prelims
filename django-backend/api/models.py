@@ -5,11 +5,11 @@ import uuid
 
 # Create your models here.
 class NFTCollectible(models.Model):
-    token = models.CharField(max_length=100)
+    token = models.CharField(max_length=100, editable=False, unique=True)
 
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/', default=None, null=True, blank=True)
     price = models.FloatField()
     
     user = models.ForeignKey(User, default=None, null=True, on_delete=models.SET_NULL)
@@ -23,3 +23,6 @@ class NFTCollectible(models.Model):
     def __save__(self, *args, **kwargs):
         if not self.token: self.token = str(uuid.uuid4())[:12]
         super(NFTCollectible, self).save(*args, **kwargs)
+
+class Purchase(models.Model):
+    pass
