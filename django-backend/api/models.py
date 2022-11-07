@@ -69,12 +69,12 @@ class NFTCollectible(models.Model):
     
     owner = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL)
     @property
-    def is_bought(self):
-        return self.owner is not None
+    def is_available(self):
+        return self.owner is None
     
     @property
     def bids(self):
-        if not self.is_bought:
+        if self.is_available:
             return []
         else:
             purchase_requests = PurchaseRequest.objects.filter(nft_token=self.token)
@@ -110,23 +110,20 @@ class LootboxTier(models.Model):
         for tier in self.included_tiers:
             print(tier)
             query = NFTCollectible.objects.filter(tier=tier)
-            query = [collectible for collectible in query if not collectible.is_bought]
+            query = [collectible for collectible in query if collectible.is_available]
+            if len(query) == 0:
+                continue
 
             tier_num = int(tier.split('_')[1])
             collectible_sets.append({'tier': tier_num, 'collectibles': query})
         
         collectible_sets.sort(key=lambda x: x['tier'], reverse=False)
-        num_selected_tiers = len(collectible_sets)
-
+        print('Got matching sets', collectible_sets)
+        
+        # For now, just select one of each tier
         selected_collectibles = []
+        for collectible_set in collectible_sets:
 
-        # Starts from the most valuable tier and goes to the lowest valuable tier
-        for i, tier_set in enumerate(collectible_sets):
-            tier_num = tier_set['tier']
-            collectibles = tier_set['collectibles']
-            if len(collectibles) == 0: continue
-            selected_num = (num_selected_tiers - i) * 2
-            if selected_num > len(collectibles): selected_num = len(collectibles)
-            selected_collectibles += random.sample(collectibles, selected_num)
+            selected_collectibles.append(random.choice(collectible_set['collectibles']))
         return selected_collectibles
 
