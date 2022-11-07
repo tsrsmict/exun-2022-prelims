@@ -15,6 +15,7 @@ sentry-sdk = "*"
 django-tailwind = "*"
 markdown = "*"
 djangorestframework = "*"
+pillow = "*"
 
 [dev-packages]
 
