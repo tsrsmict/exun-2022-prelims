@@ -49,7 +49,7 @@ class NFTCollectible(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='media/images/', default=None, null=True, blank=True)
+    image = models.ImageField(upload_to='images', default=None, null=True, blank=True)
     tier = models.CharField(max_length=10, choices=COLLECTIBLE_TIERS, default='TIER_5')
     
     owner = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL)
@@ -120,7 +120,10 @@ class Player(models.Model):
     @property
     def username(self):
         return self.account.username
-    profile_image = models.ImageField(upload_to='media/images/', default=None, null=True, blank=True)
+    
+    def __str__(self) -> str:
+        return self.username
+    profile_image = models.ImageField(upload_to='images', default=None, null=True, blank=True)
 
     spacebucks = models.FloatField(default=0.0)
     game_coins = models.BigIntegerField(default=0)
