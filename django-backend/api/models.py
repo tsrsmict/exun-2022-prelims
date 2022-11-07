@@ -18,12 +18,27 @@ COLLECTIBLE_TIERS = (
     ('TIER_5', 'Common'),
 )
 
+class Player(models.Model):
+    account = models.OneToOneField(User, on_delete=models.CASCADE)
+    @property
+    def username(self):
+        return self.account.username
+    
+    def __str__(self) -> str:
+        return self.username
+    profile_image = models.ImageField(upload_to='images', default=None, null=True, blank=True)
 
+    spacebucks = models.FloatField(default=10.0)
+    coins = models.BigIntegerField(default=1000)
+
+    @property
+    def collectibles(self):
+        return NFTCollectible.objects.filter(owner=self.account)
 
 class PurchaseRequest(models.Model):
     nft_token = models.CharField(max_length=100, editable=False, unique=True)
-    sender = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='sender')
-    receiver = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='receiver')
+    sender = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='sender')
+    receiver = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='receiver')
     datetime_sent = models.DateTimeField(auto_now_add=True)
 
     amount = models.FloatField(default=0.0)
@@ -115,19 +130,3 @@ class LootboxTier(models.Model):
             selected_collectibles += random.sample(collectibles, selected_num)
         return selected_collectibles
 
-class Player(models.Model):
-    account = models.OneToOneField(User, on_delete=models.CASCADE)
-    @property
-    def username(self):
-        return self.account.username
-    
-    def __str__(self) -> str:
-        return self.username
-    profile_image = models.ImageField(upload_to='images', default=None, null=True, blank=True)
-
-    spacebucks = models.FloatField(default=0.0)
-    game_coins = models.BigIntegerField(default=0)
-
-    @property
-    def collectibles(self):
-        return NFTCollectible.objects.filter(owner=self.account)

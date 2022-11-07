@@ -43,15 +43,24 @@ class OpenLootboxView(APIView):
         # Get the lootbox tier from the database
         try:
             collectible_tier = models.LootboxTier.objects.get(id=lootbox_id)
-        except models.LootboxTier.DoesNotExist:
+        except Exception as e:
+            print(e)
             return HttpResponse('Invalid lootbox ID', status=400)
+
+        try:
+            player = models.Player.objects.get(account__id=request.user.id)
+        except Exception as e:
+            print(e)
+            return HttpResponse('Invalid player ID', status=400)
         
+        # Subtract the value of the lootbox from the player's account
+        player.coins -= collectible_tier.coins_price
+
         # Get the lootbox tier's NFTs
         nfts = collectible_tier.random_collectibles()
         for nft in nfts:
-            nft.owner = request.user
-            nft.save()
-        
+            nft.owner = player
+            nft.save()        
         res_data = {"collectibles": [nft.token for nft in nfts]}
         res = JSONRenderer().render(res_data)
 
