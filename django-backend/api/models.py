@@ -18,8 +18,34 @@ COLLECTIBLE_TIERS = (
     ('TIER_5', 'Common'),
 )
 
+
+
+class PurchaseRequest(models.Model):
+    nft_token = models.CharField(max_length=100, editable=False, unique=True)
+    sender = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='sender')
+    receiver = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='receiver')
+    datetime_sent = models.DateTimeField(auto_now_add=True)
+
+    amount = models.FloatField(default=0.0)
+    
+    is_accepted = models.BooleanField(default=False)
+    datetime_accepted = models.DateTimeField(null=True, blank=True)
+
+    tracker = FieldTracker()
+    
+    def __str__(self):
+        return f"{self.sender} wants to buy {self.nft} from {self.receiver}"
+
+@receiver(pre_save, sender=PurchaseRequest)
+def pre_save_callback(sender, instance, *args, **kwargs):
+    print('Pre save function...')
+    if instance.tracker.has_changed('is_accepted') and instance.is_accepted:
+        instance.datetime_accepted = datetime.datetime.now()
+        instance.nft.owner = instance.sender
+        instance.nft.save()
+
 class NFTCollectible(models.Model):
-    token = models.CharField(max_length=100, editable=False, unique=True)
+    token = models.CharField(max_length=100, editable=False, unique=True, default='')
 
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
@@ -30,6 +56,22 @@ class NFTCollectible(models.Model):
     @property
     def is_bought(self):
         return self.owner is not None
+    
+    @property
+    def bids(self):
+        if not self.is_bought:
+            return []
+        else:
+            purchase_requests = PurchaseRequest.objects.filter(nft_token=self.token)
+            return purchase_requests.filter(is_accepted=False)
+    
+    @property
+    def max_bid(self):
+        max_bid = self.bids[0]
+        for bid in self.bids[1:]:
+            if bid.amount > max_bid.amount:
+                max_bid = bid
+        return max_bid
 
     def __str__(self):
         return self.name
@@ -40,8 +82,9 @@ class NFTCollectible(models.Model):
         super(NFTCollectible, self).save(*args, **kwargs)
 
 class LootboxTier(models.Model):
+    title = models.CharField(max_length=100)
     included_tiers = MultiSelectField(choices=COLLECTIBLE_TIERS, max_choices = 5, max_length=100)
-    price = models.FloatField(default=0.0)
+    coins_price = models.IntegerField(default=0.0)
 
     def __str__(self) -> str:
         return f'{self.included_tiers} - {self.price}'
@@ -72,24 +115,16 @@ class LootboxTier(models.Model):
             selected_collectibles += random.sample(collectibles, selected_num)
         return selected_collectibles
 
-class PurchaseRequest(models.Model):
-    nft = models.ForeignKey(NFTCollectible, on_delete=models.CASCADE)
-    sender = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='sender')
-    receiver = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='receiver')
-    datetime_sent = models.DateTimeField(auto_now_add=True)
-    
-    is_accepted = models.BooleanField(default=False)
-    datetime_accepted = models.DateTimeField(null=True, blank=True)
+class Player(models.Model):
+    account = models.OneToOneField(User, on_delete=models.CASCADE)
+    @property
+    def username(self):
+        return self.account.username
+    profile_image = models.ImageField(upload_to='images/', default=None, null=True, blank=True)
 
-    tracker = FieldTracker()
-    
-    def __str__(self):
-        return f"{self.sender} wants to buy {self.nft} from {self.receiver}"
+    spacebucks = models.FloatField(default=0.0)
+    game_coins = models.BigIntegerField(default=0)
 
-@receiver(pre_save, sender=PurchaseRequest)
-def pre_save_callback(sender, instance, *args, **kwargs):
-    print('Pre save function...')
-    if instance.tracker.has_changed('is_accepted') and instance.is_accepted:
-        instance.datetime_accepted = datetime.datetime.now()
-        instance.nft.owner = instance.sender
-        instance.nft.save()
+    @property
+    def collectibles(self):
+        return NFTCollectible.objects.filter(owner=self.account)

@@ -26,7 +26,7 @@ class NFTCollectibleViewSet(viewsets.ModelViewSet):
 
 class PurchaseRequestViewSet(viewsets.ModelViewSet):
     queryset = models.PurchaseRequest.objects.all()
-    serializer_class = custom_serializers.PurchaseRequest
+    serializer_class = custom_serializers.PurchaseRequestSerializer
 
 class OpenLootboxView(APIView):
     authentication_classes = [BasicAuthentication, TokenAuthentication]
@@ -57,5 +57,18 @@ class OpenLootboxView(APIView):
 
         return HttpResponse(res, content_type='application/json', status=200)
 
-        # return 
+class PlayerViewSet(viewsets.ModelViewSet):
+    queryset = models.Player.objects.all()
+    serializer_class = custom_serializers.PlayerSerializer
 
+    def get_queryset(self):
+        queryset = models.Player.objects.all()
+        username = self.request.query_params.get('username', None)
+        if username is not None:
+            queryset = queryset.filter(username=username)
+        return queryset
+
+""""
+coins for lootboxes
+spacebucks for marketplace
+"""
