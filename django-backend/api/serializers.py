@@ -36,4 +36,4 @@ class LootboxSerializer(serializers.ModelSerializer):
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Player
-        fields = ['id', 'username', 'profile_image', 'spacebucks', 'game_coins', 'collectibles']
+        fields = ['id', 'account_id', 'username', 'profile_image', 'spacebucks', 'coins', 'collectibles']

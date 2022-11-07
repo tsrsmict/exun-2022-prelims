@@ -33,7 +33,7 @@ class Player(models.Model):
 
     @property
     def collectibles(self):
-        return NFTCollectible.objects.filter(owner=self.account)
+        return NFTCollectible.objects.filter(owner=self)
 
 class PurchaseRequest(models.Model):
     nft_token = models.CharField(max_length=100, editable=False, unique=True)
@@ -67,7 +67,7 @@ class NFTCollectible(models.Model):
     image = models.ImageField(upload_to='images', default=None, null=True, blank=True)
     tier = models.CharField(max_length=10, choices=COLLECTIBLE_TIERS, default='TIER_5')
     
-    owner = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL)
     @property
     def is_bought(self):
         return self.owner is not None
