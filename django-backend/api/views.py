@@ -2,14 +2,18 @@ from django.contrib.auth.models import User
 
 from rest_framework import viewsets
 
-from .serializers import UserSerializer, NFTCollectibleSerializer
-from .models import NFTCollectible
+from . import serializers as custom_serializers
+from . import models as models
 
 # ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = custom_serializers.UserSerializer
 
 class NFTCollectibleViewSet(viewsets.ModelViewSet):
-    queryset = NFTCollectible.objects.all()
-    serializer_class = NFTCollectibleSerializer
+    queryset = models.NFTCollectible.objects.all()
+    serializer_class = custom_serializers.NFTCollectibleSerializer
+
+class PurchaseRequestViewSet(viewsets.ModelViewSet):
+    queryset = models.PurchaseRequest.objects.all()
+    serializer_class = custom_serializers.PurchaseRequest

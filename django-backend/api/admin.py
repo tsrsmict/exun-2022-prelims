@@ -1,6 +1,10 @@
 from django.contrib import admin
-from .models import NFTCollectible
+from . import models as models
 # Register your models here.
-@admin.register(NFTCollectible)
+@admin.register(models.NFTCollectible)
 class NFTCollectibleAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(models.PurchaseRequest)
+class PurchaseRequestAdmin(admin.ModelAdmin):
     pass
