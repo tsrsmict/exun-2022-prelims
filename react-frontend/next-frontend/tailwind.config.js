@@ -7,11 +7,12 @@ module.exports = {
   ],
   theme: {
     colors: {
-      "cream-yellow": "#f3ffbdff",
-      "blue-sapphire": "#086375ff",
-      "dark-turquoise": "#25ced1ff",
-      "dark-purple": "#23001eff",
-      "magenta-pink": "#d30c7bff"
+      "light-yellow": "#fffbd8ff",
+      "medium-slate-blue": "#7a59ffff",
+      "duke-blue": "#0800a0ff",
+      "black-chocolate": "#211103ff",
+      "rose-red": "#cc005cff"
+
     },
     extend: {},
   },
