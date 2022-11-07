@@ -5,9 +5,16 @@ from . import models as models
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    password = serializers.CharField(write_only=True)
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'is_staff']
+        fields = ['url', 'username', 'password', 'email', 'is_staff']
+    
+    def create(self, validated_data):
+        user = super(UserSerializer, self).create(validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 class PurchaseRequestSerializer(serializers.ModelSerializer):
@@ -34,6 +41,11 @@ class LootboxSerializer(serializers.ModelSerializer):
         fields = ['included_tiers', 'price']
 
 class PlayerSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField(source='user.id')
+    # account_id = serializers.ReadOnlyField(source='account.id')
+    spacebucks = serializers.FloatField(read_only=True)
+    coins = serializers.IntegerField(read_only=True)
+    collectibles = NFTCollectibleSerializer(many=True, read_only=True)
     class Meta:
         model = models.Player
-        fields = ['id', 'account_id', 'username', 'profile_image', 'spacebucks', 'coins', 'collectibles']
+        fields = ['id', 'username', 'profile_image', 'spacebucks', 'coins', 'collectibles']

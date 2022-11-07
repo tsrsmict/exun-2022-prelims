@@ -21,10 +21,14 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = custom_serializers.UserSerializer
 
 class NFTCollectibleViewSet(viewsets.ModelViewSet):
+    authentication_classes = [BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = models.NFTCollectible.objects.all()
     serializer_class = custom_serializers.NFTCollectibleSerializer
 
 class PurchaseRequestViewSet(viewsets.ModelViewSet):
+    authentication_classes = [BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = models.PurchaseRequest.objects.all()
     serializer_class = custom_serializers.PurchaseRequestSerializer
 
@@ -67,6 +71,9 @@ class OpenLootboxView(APIView):
         return HttpResponse(res, content_type='application/json', status=200)
 
 class PlayerViewSet(viewsets.ModelViewSet):
+    authentication_classes = [BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     queryset = models.Player.objects.all()
     serializer_class = custom_serializers.PlayerSerializer
 

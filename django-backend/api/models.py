@@ -19,7 +19,7 @@ COLLECTIBLE_TIERS = (
 )
 
 class Player(models.Model):
-    account = models.OneToOneField(User, on_delete=models.CASCADE)
+    account = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     @property
     def username(self):
         return self.account.username
