@@ -88,12 +88,14 @@ class OpenLootboxView(APIView):
         for nft in nfts:
             nft.owner = player
             nft.save()
-
+        nft_data = custom_serializers.NFTCollectibleSerializer(nfts, many=True).data
+        
         renderer = JSONRenderer()
         account_data = (custom_serializers.PlayerSerializer(player).data)
 
         res = {
             "success": len(nfts) > 0,
+            "acquired_collectibles": nft_data,
             "account": account_data,
         }
 
