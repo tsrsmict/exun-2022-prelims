@@ -30,5 +30,8 @@ urlpatterns = [
     path('', include(lootbox_router.urls)),
 
     path('open-lootbox/', views.OpenLootboxView.as_view(), name='open-lootbox'),
-    path('token-auth/', views.CustomAuthToken.as_view(), name='auth_token'),
+    path('make-purchase-request/', views.SubmitPurchaseRequestView.as_view(), name='purchase-request'),
+    path('accept-purchase-request/', views.AcceptPurchaseRequestView.as_view(), name='accept-purchase-request'),
+
+    path('get-token', views.CustomAuthToken.as_view(), name='auth_token'),
 ]

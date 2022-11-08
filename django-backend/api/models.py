@@ -36,28 +36,18 @@ class Player(models.Model):
         return NFTCollectible.objects.filter(owner=self)
 
 class PurchaseRequest(models.Model):
-    nft_token = models.CharField(max_length=100, editable=False, unique=True)
+    nft = models.ForeignKey('NFTCollectible', default=None, null=True, blank=True, on_delete=models.CASCADE)
     sender = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='sender')
     receiver = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='receiver')
     datetime_sent = models.DateTimeField(auto_now_add=True)
 
-    amount = models.FloatField(default=0.0)
+    amount_spacebucks = models.FloatField(default=0.0)
     
     is_accepted = models.BooleanField(default=False)
     datetime_accepted = models.DateTimeField(null=True, blank=True)
-
-    tracker = FieldTracker()
     
     def __str__(self):
-        return f"{self.sender} wants to buy {self.nft} from {self.receiver}"
-
-@receiver(pre_save, sender=PurchaseRequest)
-def pre_save_callback(sender, instance, *args, **kwargs):
-    print('Pre save function...')
-    if instance.tracker.has_changed('is_accepted') and instance.is_accepted:
-        instance.datetime_accepted = datetime.datetime.now()
-        instance.nft.owner = instance.sender
-        instance.nft.save()
+        return f"{self.sender} wants to buy {self.nft} from {self.receiver} for {self.amount_spacebucks} spacebucks"
 
 class NFTCollectible(models.Model):
     token = models.CharField(max_length=100, editable=False, unique=True, default='')
@@ -69,22 +59,22 @@ class NFTCollectible(models.Model):
     
     owner = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL)
     @property
-    def is_available(self):
+    def is_unmined(self):
         return self.owner is None
     
     @property
     def bids(self):
-        if self.is_available:
+        if self.is_unmined:
             return []
         else:
-            purchase_requests = PurchaseRequest.objects.filter(nft_token=self.token)
+            purchase_requests = PurchaseRequest.objects.filter(nft__token=self.token)
             return purchase_requests.filter(is_accepted=False)
     
     @property
     def max_bid(self):
         max_bid = self.bids[0]
         for bid in self.bids[1:]:
-            if bid.amount > max_bid.amount:
+            if bid.amount_spacebucks > max_bid.amount_spacebucks:
                 max_bid = bid
         return max_bid
 
@@ -110,7 +100,7 @@ class LootboxTier(models.Model):
         for tier in self.included_tiers:
             print(tier)
             query = NFTCollectible.objects.filter(tier=tier)
-            query = [collectible for collectible in query if collectible.is_available]
+            query = [collectible for collectible in query if collectible.is_unmined]
             if len(query) == 0:
                 continue
 
