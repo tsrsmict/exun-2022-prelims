@@ -12,3 +12,7 @@ class PurchaseRequestAdmin(admin.ModelAdmin):
 @admin.register(models.LootboxTier)
 class LootboxTierAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(models.Player)
+class PlayerAdmin(admin.ModelAdmin):
+    pass

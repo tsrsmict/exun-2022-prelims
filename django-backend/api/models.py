@@ -18,18 +18,65 @@ COLLECTIBLE_TIERS = (
     ('TIER_5', 'Common'),
 )
 
+class Player(models.Model):
+    account = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    @property
+    def username(self):
+        return self.account.username
+    
+    def __str__(self) -> str:
+        return self.username
+    profile_image = models.ImageField(upload_to='images', default=None, null=True, blank=True)
+
+    spacebucks = models.FloatField(default=10.0)
+    coins = models.BigIntegerField(default=1000)
+
+    @property
+    def collectibles(self):
+        return NFTCollectible.objects.filter(owner=self)
+
+class PurchaseRequest(models.Model):
+    nft = models.ForeignKey('NFTCollectible', default=None, null=True, blank=True, on_delete=models.CASCADE)
+    sender = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='sender')
+    receiver = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='receiver')
+    datetime_sent = models.DateTimeField(auto_now_add=True)
+
+    amount_spacebucks = models.FloatField(default=0.0)
+    
+    is_accepted = models.BooleanField(default=False)
+    datetime_accepted = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.sender} wants to buy {self.nft} from {self.receiver} for {self.amount_spacebucks} spacebucks"
+
 class NFTCollectible(models.Model):
-    token = models.CharField(max_length=100, editable=False, unique=True)
+    token = models.CharField(max_length=100, editable=False, unique=True, default='')
 
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images/', default=None, null=True, blank=True)
+    image = models.ImageField(upload_to='images', default=None, null=True, blank=True)
     tier = models.CharField(max_length=10, choices=COLLECTIBLE_TIERS, default='TIER_5')
     
-    owner = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(Player, default=None, null=True, blank=True, on_delete=models.SET_NULL)
     @property
-    def is_bought(self):
-        return self.owner is not None
+    def is_unmined(self):
+        return self.owner is None
+    
+    @property
+    def bids(self):
+        if self.is_unmined:
+            return []
+        else:
+            purchase_requests = PurchaseRequest.objects.filter(nft__token=self.token)
+            return purchase_requests.filter(is_accepted=False)
+    
+    @property
+    def max_bid(self):
+        max_bid = self.bids[0]
+        for bid in self.bids[1:]:
+            if bid.amount_spacebucks > max_bid.amount_spacebucks:
+                max_bid = bid
+        return max_bid
 
     def __str__(self):
         return self.name
@@ -40,11 +87,12 @@ class NFTCollectible(models.Model):
         super(NFTCollectible, self).save(*args, **kwargs)
 
 class LootboxTier(models.Model):
+    title = models.CharField(max_length=100)
     included_tiers = MultiSelectField(choices=COLLECTIBLE_TIERS, max_choices = 5, max_length=100)
-    price = models.FloatField(default=0.0)
+    coins_price = models.IntegerField(default=0.0)
 
     def __str__(self) -> str:
-        return f'{self.included_tiers} - {self.price}'
+        return f'{self.included_tiers} - {self.coins_price}'
 
     def random_collectibles(self):
         collectible_sets = []
@@ -52,44 +100,20 @@ class LootboxTier(models.Model):
         for tier in self.included_tiers:
             print(tier)
             query = NFTCollectible.objects.filter(tier=tier)
-            query = [collectible for collectible in query if not collectible.is_bought]
+            query = [collectible for collectible in query if collectible.is_unmined]
+            if len(query) == 0:
+                continue
 
             tier_num = int(tier.split('_')[1])
             collectible_sets.append({'tier': tier_num, 'collectibles': query})
         
         collectible_sets.sort(key=lambda x: x['tier'], reverse=False)
-        num_selected_tiers = len(collectible_sets)
-
+        print('Got matching sets', collectible_sets)
+        
+        # For now, just select one of each tier
         selected_collectibles = []
+        for collectible_set in collectible_sets:
 
-        # Starts from the most valuable tier and goes to the lowest valuable tier
-        for i, tier_set in enumerate(collectible_sets):
-            tier_num = tier_set['tier']
-            collectibles = tier_set['collectibles']
-            if len(collectibles) == 0: continue
-            selected_num = (num_selected_tiers - i) * 2
-            if selected_num > len(collectibles): selected_num = len(collectibles)
-            selected_collectibles += random.sample(collectibles, selected_num)
+            selected_collectibles.append(random.choice(collectible_set['collectibles']))
         return selected_collectibles
 
-class PurchaseRequest(models.Model):
-    nft = models.ForeignKey(NFTCollectible, on_delete=models.CASCADE)
-    sender = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='sender')
-    receiver = models.ForeignKey(User, default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='receiver')
-    datetime_sent = models.DateTimeField(auto_now_add=True)
-    
-    is_accepted = models.BooleanField(default=False)
-    datetime_accepted = models.DateTimeField(null=True, blank=True)
-
-    tracker = FieldTracker()
-    
-    def __str__(self):
-        return f"{self.sender} wants to buy {self.nft} from {self.receiver}"
-
-@receiver(pre_save, sender=PurchaseRequest)
-def pre_save_callback(sender, instance, *args, **kwargs):
-    print('Pre save function...')
-    if instance.tracker.has_changed('is_accepted') and instance.is_accepted:
-        instance.datetime_accepted = datetime.datetime.now()
-        instance.nft.owner = instance.sender
-        instance.nft.save()
