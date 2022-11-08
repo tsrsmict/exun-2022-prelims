@@ -17,7 +17,12 @@ module.exports = {
       },
       backgroundImage: {
         'cool-space': "url('./public/coolspace.jpg)",
-      }
+      },
+      fontFamily: {
+        attures: ["Atures"],
+        space: ["Space Legion"],
+        grotesk: ['Space Grotesk']
+      },
     },
   },
   plugins: [],

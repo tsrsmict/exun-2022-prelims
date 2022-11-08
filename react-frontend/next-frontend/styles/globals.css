@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Atures";
+  src: url("../public/fonts/atures/Atures-100_PERSONAL_USE.ttf");
+  font-family: "Space Legion";
+  src: url("../public/fonts/laser_corps/lasercorps.ttf");
+
+}
