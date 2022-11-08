@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }) {
   <motion.div variants={variants} initial="hidden" // Set the initial state to variants.hidden
   animate="enter" // Animated state to variants.enter
   exit="exit" // Exit state (used later) to variants.exit
-  transition={{ type: 'linear', delay: 1 }} // Set the transition to linear
+  transition={{ type: 'linear', delay: 0.4 }} // Set the transition to linear
   className="">
     <Component {...pageProps} />
     </motion.div>

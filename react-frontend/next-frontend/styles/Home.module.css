@@ -1,0 +1,67 @@
+.coin {
+  /* Group 6 */
+
+position: absolute;
+width: 173px;
+height: 187px;
+left: 246px;
+top: 1292px;
+
+
+
+/* Group 5 */
+
+position: absolute;
+width: 117px;
+height: 119.29px;
+left: 274px;
+top: 1292px;
+
+
+
+/* coin 1 */
+
+position: absolute;
+width: 117px;
+height: 119.29px;
+left: 274px;
+top: 1292px;
+
+background: url(coin.png);
+
+
+/* rocket (1) 1 */
+
+position: absolute;
+width: 91.41px;
+height: 91.41px;
+left: 286.8px;
+top: 1310.28px;
+
+background: url('rocket(1).png');
+
+
+/* Earn */
+
+position: absolute;
+width: 173px;
+height: 36px;
+left: 246px;
+top: 1443px;
+
+font-family: 'Atures 900 PERSONAL USE ONLY';
+font-style: normal;
+font-weight: 900;
+font-size: 32px;
+line-height: 75px;
+/* or 234% */
+display: flex;
+align-items: center;
+text-align: center;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+
+color: #FFFFFF;
+
+
+}
