@@ -14,8 +14,6 @@ COLLECTIBLE_TIERS = (
     ('TIER_1', 'Legendary'),
     ('TIER_2', 'Epic'),
     ('TIER_3', 'Rare'),
-    ('TIER_4', 'Uncommon'),
-    ('TIER_5', 'Common'),
 )
 
 class Player(models.Model):
