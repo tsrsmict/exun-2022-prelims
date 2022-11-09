@@ -13,7 +13,7 @@ Run the following commands in your shell in the root directory of the django rep
 This will open the dev server on http://localhost:8000
 
 ## API Documentation
-All endpoints below are relative to `/api`
+All endpoints below are relative to `/api` and have been documented in the postman collection in the root folder.
 
 - `/users`: 
   -   `GET` a list of users
