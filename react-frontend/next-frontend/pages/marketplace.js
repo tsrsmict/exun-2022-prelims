@@ -20,7 +20,8 @@ function marketplace() {
                 <h5 class="text-xl p-2 font-semibold tracking-tight text-gray-900 dark:text-white">Sonic Engine Traveller</h5>
             </a>
             <div class="flex justify-between items-center">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">Top bid: 4.8K SpaceCoins</span>
+            <span class="text-3xl font-bold text-gray-900 dark:text-white">GuardianG42</span>
+            <span class="text-3xl font-bold text-gray-900 dark:text-white">Top bid: 4.8K SpaceCoins</span>
                 <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit bid</a>
             </div>
         </div>
@@ -34,6 +35,7 @@ function marketplace() {
                 <h5 class="text-xl font-semibold p-2 tracking-tight text-gray-900 dark:text-white">Space Tripple Cannon Fighter</h5>
             </a>
             <div class="flex justify-between items-center">
+                <span class="text-3xl font-bold text-gray-900 dark:text-white">EpicGamer</span>
                 <span class="text-3xl font-bold text-gray-900 dark:text-white">Top bid: 23.8k SpaceCoins</span>
                 <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit bid</a>
             </div>
