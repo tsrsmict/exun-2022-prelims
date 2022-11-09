@@ -9,3 +9,7 @@
   src: url("../public/fonts/laser_corps/lasercorps.ttf");
 
 }
+
+html {
+  overflow-x: hidden;
+}
