@@ -10,10 +10,14 @@ module.exports = {
     extend: {
       colors: {
         "light-yellow": "#fffbd8ff",
-        "medium-slate-blue": "#7a59ffff",
-        "duke-blue": "#0800a0ff",
-        "black-chocolate": "#6",
+        "slate-blue": "#99DDFF",
+        "purplish": "#181867",
+        "purplish-two": "#4E1867",
+        "purplish-three": "#602040",
+        "purplish-four": '#661A33',
+        "cute-pink": "#FF99BB",
         "rose-red": "#cc005cff",
+        "gray-cool": '#6B6B6B'
       },
       backgroundImage: {
         'cool-space': "url('./public/coolspace.jpg)",
