@@ -53,7 +53,7 @@ class NFTCollectible(models.Model):
     token = models.CharField(max_length=100, editable=False, unique=True, default='')
 
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
+    description = models.TextField()
     image = models.ImageField(upload_to='images', default=None, null=True, blank=True)
     tier = models.CharField(max_length=10, choices=COLLECTIBLE_TIERS, default='TIER_5')
     
