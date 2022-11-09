@@ -37,6 +37,7 @@ export default function Home() {
                   <FaGooglePlay className="mx-5 flex text-5xl" />
                 </span>
               </div>
+              
             </div>
           </div>
         </div>
@@ -104,7 +105,7 @@ export default function Home() {
               REAL VALUE. PERIOD.
             </h1>
           </div>
-          <div>
+          <div className="flex">
           <h1 className="font-thin text-5xl font-mono w-3/5 text-purple-500">
             We don’t like Pay-to-Win games.
             <br />
@@ -118,6 +119,7 @@ export default function Home() {
             You can earn <span className="font-bold">real crypto</span>, trading your SpaceBits on this website for
             SpaceBucks™️ - an all-new cryptocurrency.
           </h1>
+          <img src="/NFTs.png" className="w-2/5 h-2/5 mt-5"/>
           </div>
         </div>
         <div className="bg-gradient-to-b from-purplish-three to-purplish-four h-screen w-full p-24">
