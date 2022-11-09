@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../components/Header'
-function marketplace() {
+function userprofile() {
   return (
     <div className='bg-black'>
     <Header/>
@@ -48,4 +48,4 @@ function marketplace() {
   )
 }
 
-export default marketplace
+export default userprofile

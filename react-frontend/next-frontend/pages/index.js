@@ -27,7 +27,7 @@ export default function Home() {
               <span className="text-red-400 p-5">Legion</span>
               <br />
               <br />
-              <p className="mx-96 my-5 items-center text-center text-5xl flex font-mono tracking-tight">
+              <div className="mx-96 my-5 items-center text-center text-5xl flex font-mono tracking-tight">
                 Available on: <FaPlaystation className="mx-5 flex text-5xl" />
                 <br />
                 <span className="flex">
@@ -36,7 +36,7 @@ export default function Home() {
                   <FaXbox className="mx-5 flex text-5xl" />
                   <FaGooglePlay className="mx-5 flex text-5xl" />
                 </span>
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -100,12 +100,12 @@ export default function Home() {
         </div>
         <div className="bg-gradient-to-b from-purplish-two to-purplish-three h-screen w-full p-24">
           <div className=" items-center text-center">
-            <h1 className="text-cute-pink text-7xl font-bold font-space upper mb-24">
+            <h1 className="text-purple-400 text-7xl font-bold font-space upper mb-24">
               REAL VALUE. PERIOD.
             </h1>
           </div>
           <div>
-          <h1 className="font-thin text-5xl font-mono w-3/5 text-pink-500">
+          <h1 className="font-thin text-5xl font-mono w-3/5 text-purple-500">
             We don’t like Pay-to-Win games.
             <br />
             <br />
@@ -122,14 +122,30 @@ export default function Home() {
         </div>
         <div className="bg-gradient-to-b from-purplish-three to-purplish-four h-screen w-full p-24">
         <div className=" items-center text-center">
-            <h1 className="text-cute-pink text-7xl font-bold font-space upper mb-24">
-              REAL VALUE. PERIOD.
+            <h1 className="text-cute-pink text-5xl font-bold font-space upper mb-5">
+              Dont Stop.
             </h1>
+            <h1 className="text-cute-pink text-7xl font-bold font-space upper mb-24">
+             We Go Where You Go.
+            </h1>
+            <div className="text-white w-4/5  m-auto text-center font-mono font-light text-5xl">
+            You need a game that’s as flexible as you. 
+            That’s why we’re on <br/> <strong className="font-bold">PC, console, and mobile.</strong>
+            </div>
+            <div className="flex">
+            <img className="mx-auto w-5/8 mt-24" src='/mockups.png' />
+            </div>
           </div>
+          
         </div>
+        <div className="w-full h-screen items-center pt-72 px-24 bg-gradient-to-b from-purplish-four to-purplish-five">
+            <div className="font-mono font-bold text-white text-7xl flex items-center">WE'RE GOING TO</div><br/><h1 className="font-mono font-bold text-white text-7xl flex items-center">THE MOON <img className="w-24 ml-10" src='/nft2.png'/></h1>
+            <h1 className="text-4xl mt-10 text-white font-bold font-mono">Be the first to hear about our latest updates.</h1>
+            <input className="bg-white border m-5 p-5 border-4 text-black placeholder:text-black text-5xl rounded-lg border-black border-spacing-8 bg-opacity-0" type='email' placeholder="EMAIL" ></input>
+    </div>
       </div>
+      
     </div>
   );
 }
 
-// scene.js
