@@ -1,17 +1,18 @@
 import React from 'react'
 import Header from '../components/Header'
+
 function userprofile() {
   return (
     <div className='bg-black'>
     <Header/>
-    <div className="p-12 bg-[url('/marketplace3.jpg')] bg-cover bg-repeat-0 backdrop-blur-3xl h-screen w-full">
+    <div className="p-12 bg-[url('/coolspace.jpg')]  bg-cover bg-repeat-0 backdrop-blur-3xl h-screen w-full">
         
-        <div>
-        <h1 className="backdrop-blur-2xl rounded-2xl text-center font-space text-5xl p-5 font-bold text-white shadow-2xl pb-2">Marketplace</h1>
+        <div className='flex backdrop-blur-2xl bg-white bg-opacity-25 rounded-2xl justify-between'>
+        <h1 className="font-space text-5xl p-5 font-bold text-white shadow-2xl pb-2 ml-auto">MARKETPLACE</h1>
         </div>
     <div className="inline-flex">
 
-    <div class="m-20 left-20 w-full max-w-sm rounded-lg backdrop-blur-2xl">
+    <div class="m-20 left-20 bg-white bg-opacity-25 w-full max-w-sm rounded-lg backdrop-blur-2xl">
         <a href="#">
             <img class="p-8 w-80 rounded-t-lg" src="/nft1.png" alt="product image"/>
         </a>
@@ -27,7 +28,7 @@ function userprofile() {
             </div>
         </div>
     </div>
-    <div class="m-20 left-20 w-full max-w-sm rounded-lg backdrop-blur-2xl">
+    <div class="m-20 left-20 bg-white bg-opacity-25 w-full max-w-sm rounded-lg backdrop-blur-2xl">
         <a href="#">
             <img class="p-8 rounded-t-lg w-72" src="/nft2.png" alt="product image"/>
         </a>

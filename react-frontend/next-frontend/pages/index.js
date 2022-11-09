@@ -141,7 +141,7 @@ export default function Home() {
         <div className="w-full h-screen items-center pt-72 px-24 bg-gradient-to-b from-purplish-four to-purplish-five">
             <div className="font-mono font-bold text-white text-7xl flex items-center">WE'RE GOING TO</div><br/><h1 className="font-mono font-bold text-white text-7xl flex items-center">THE MOON <img className="w-24 ml-10" src='/nft2.png'/></h1>
             <h1 className="text-4xl mt-10 text-white font-bold font-mono">Be the first to hear about our latest updates.</h1>
-            <input className="bg-white border m-5 p-5 border-4 text-black placeholder:text-black text-5xl rounded-lg border-black border-spacing-8 bg-opacity-0" type='email' placeholder="EMAIL" ></input>
+            <input className="bg-white text-3xl my-24 w-1/2 p-12 w-/11 font-mono font-bold border-2 shadow-2xl border-gray-500 text-white placeholder:text-white placeholder:font-mono placeholder:font-bold rounded-3xl border-spacing-8 bg-opacity-0" type='email' placeholder="EMAIL" ></input>
     </div>
       </div>
       
