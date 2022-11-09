@@ -204,6 +204,11 @@ class AcceptPurchaseRequestView(APIView):
         sender.spacebucks -= purchase_request.amount_spacebucks
         sender.save()
 
+        # Change the receiver of all other purchase requests for this collectible to the buyer
+        for pr in models.PurchaseRequest.objects.filter(nft=purchase_request.nft, is_accepted=False):
+            pr.receiver = sender
+            pr.save()
+
         renderer = JSONRenderer()
         res = {
             "success": True,
